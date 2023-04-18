@@ -1,0 +1,33 @@
+Outline of process
+
+
+CheckForTelemetryError()
+•	reach into telemetry and run query to determine if error exists since beginning of day. Need more sophisticated solution in future but this is good enough for first version.
+•	IsErrorState = <<logic to query telemetry and return 1 if there is an error>>
+•	If (IsErrorState = 1)
+        SetIsErrorState(1) #set yaml state file
+        Else
+        SetIsErrorState(-1) #set yaml state file
+
+
+
+#assess if defcon escalation needed and send alert as needed
+DefConEscalation()
+•	MostRecentEscalationDateTime = GetDefConStateEscalationDateTime()  #from state
+•	CurrentEscalationDefconInterval = GetDefConStateIntervalHours()  #from config
+•	If (CheckIfDefConEscalationNeeded()
+Then
+	EscalateDefconState()
+	SendAlert() #leverage status and config yaml files to identify current escalation, time, contact
+
+
+
+LogCurrentStatetoDB()
+•	Log state to database pulling config and state yaml files into database
+
+
+
+CheckIfDefConEscalationNeeded()
+•	If (DateDiffHours(MostRecentEscalationDateTime, Currentime) > CurrentEscalationDefconInterval)
+                    And if defcon has been acknowledged
+•	Return true/false

@@ -1,0 +1,17 @@
+Email_AlertCredentials:
+  Login: "ryanc@spie.org"
+  Password: "NotMyPassword"
+DBConnectionCredentials:
+  Server: "ProdWarehouse"
+  Database: "SSISDB"
+TimeBetweenEscalations: 1
+EscalationPolicy:
+  Defcon3:
+    Contact: 'ryanc@spie.org'
+  Defcon2:
+    Contact: 'ryanc@spie.org'
+  Defcon1:
+    Contact: 'ryanc@spie.org'
+
+
+

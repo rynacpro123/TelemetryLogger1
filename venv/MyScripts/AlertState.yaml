@@ -1,0 +1,7 @@
+AlertState:
+  DefconStartTime: 2023-03-22 18:56:59.226372
+  DefconState: 1
+LastCheckedState:
+  CheckStateDateTime: 2023-03-22 17:56:59.226372
+  LastRecordedErrorState: NoError
+
