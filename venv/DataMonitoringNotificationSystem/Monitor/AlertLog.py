@@ -9,7 +9,7 @@ from StateControl import *
 
 
 
-def SendAlertNotification():
+def SendAlertNotification(MessageType='GeneralError'):
 
     #SMTPLoginAcct = "ryanc@spie.org"
     #SMTPLoginPwd = "ddd!"
@@ -18,7 +18,7 @@ def SendAlertNotification():
     #receiver = "3607399044@msg.fi.google.com" # ryan
     #receiver = "2534323244@tmomail.net"  # Linden
     #receiver = "ETLGroup@spie.org"  # BI team
-    receiver = "ETLGroup@spie.org"
+    receiver = "ryanc@spie.org"
 
     AlertStatus_Dict = getCurrentAlertStateAsDict()
     Config_Dict = getCurrentConfigAsDict()
@@ -31,27 +31,59 @@ def SendAlertNotification():
     DefConLevel3 = Config_Dict['EscalationPolicy']['Defcon3']['Contact']
 
 
+    match MessageType:
+        case 'GeneralError':
+            Message = "The Warehouse ETL load has thrown an error.\n\nCurrent DefCon Level is: "+ str(DefconLevel) + "\n\nNext escalation will be sent at: " + NextEscalationTime_friendlyName + "\n"
+            Message = Message + "-----------------------------------------------------------------------"
+            Message = Message + "\n     DefConlevel3 Escalation contact: " + DefConLevel3
+            Message = Message + "\n     DefConlevel2 Escalation contact: " + DefConLevel2
+            Message = Message + "\n     DefConlevel1 Escalation contact: " + DefConLevel1
+            Message = Message + "\n---------------------------------------------------------------------"
 
-    Message = "The Warehouse ETL load has thrown an error.\n\nCurrent DefCon Level is: "+ str(DefconLevel) + "\n\nNext escalation will be sent at: " + NextEscalationTime_friendlyName + "\n"
-    Message = Message + "-----------------------------------------------------------------------"
-    Message = Message + "\n     DefConlevel3 Escalation contact: " + DefConLevel3
-    Message = Message + "\n     DefConlevel2 Escalation contact: " + DefConLevel2
-    Message = Message + "\n     DefConlevel1 Escalation contact: " + DefConLevel1
-    Message = Message + "\n---------------------------------------------------------------------"
+            # set email message contents
+            msg = EmailMessage()
+            msg['Subject'] = 'Test_DW ETL Error Alert'
+            msg['From'] = sender
+            msg['To'] = receiver
+            msg.set_content(Message)
 
 
-    Message = Message + "\n\n\n\n *NOTE* This notification is to inform you of an error in the EDW system load. The Defcon alert levels are graded from 4 (normal) to 1 (escalated). When an alert is first identified, the Defcon level progresses from 4 to 3 and the corresponding contact is notified. This pattern continues for Defcon levels 2 and 1. The Watchtower status page can be accessed to acknowledge the alert, which will return the Defcon level to 4. \n\nWatchtower alert status page: http://devapp23:5000/"
+        case 'AutoAcknowledge':
+            Message = "Watchtower  ETL load has thrown an error.\n\nCurrent DefCon Level is: " + str(DefconLevel) + "\n\nNext escalation will be sent at: " + NextEscalationTime_friendlyName + "\n"
+            Message = Message + "-----------------------------------------------------------------------"
+            Message = Message + "\n     DefConlevel3 Escalation contact: " + DefConLevel3
+            Message = Message + "\n     DefConlevel2 Escalation contact: " + DefConLevel2
+            Message = Message + "\n     DefConlevel1 Escalation contact: " + DefConLevel1
+            Message = Message + "\n---------------------------------------------------------------------"
+
+            Message = Message + "\n\n\n\n *NOTE* This notification is to inform you of an error in the EDW system load. The Defcon alert levels are graded from 4 (normal) to 1 (escalated). When an alert is first identified, the Defcon level progresses from 4 to 3 and the corresponding contact is notified. This pattern continues for Defcon levels 2 and 1. The Watchtower status page can be accessed to acknowledge the alert, which will return the Defcon level to 4. \n\nWatchtower alert status page: http://devapp23:5000/"
+
+            # set email message contents
+            msg = EmailMessage()
+            msg['Subject'] = 'Test_DW Auto Acknowledge'
+            msg['From'] = sender
+            msg['To'] = receiver
+            msg.set_content(Message)
+
+        case _:
+            Message = "Watchtower  ETL load has thrown an error.\n\nCurrent DefCon Level is: " + str(DefconLevel) + "\n\nNext escalation will be sent at: " + NextEscalationTime_friendlyName + "\n"
+            Message = Message + "-----------------------------------------------------------------------"
+            Message = Message + "\n     DefConlevel3 Escalation contact: " + DefConLevel3
+            Message = Message + "\n     DefConlevel2 Escalation contact: " + DefConLevel2
+            Message = Message + "\n     DefConlevel1 Escalation contact: " + DefConLevel1
+            Message = Message + "\n---------------------------------------------------------------------"
+
+            Message = Message + "\n\n\n\n *NOTE* This notification is to inform you of an error in the EDW system load. The Defcon alert levels are graded from 4 (normal) to 1 (escalated). When an alert is first identified, the Defcon level progresses from 4 to 3 and the corresponding contact is notified. This pattern continues for Defcon levels 2 and 1. The Watchtower status page can be accessed to acknowledge the alert, which will return the Defcon level to 4. \n\nWatchtower alert status page: http://devapp23:5000/"
+
+            # set email message contents
+            msg = EmailMessage()
+            msg['Subject'] = 'Test_DW broken'
+            msg['From'] = sender
+            msg['To'] = receiver
+            msg.set_content(Message)
 
 
-    #print(Message)
 
-
-    #set email message contents
-    msg = EmailMessage()
-    msg['Subject'] = 'DW ETL Error Alert'
-    msg['From'] = sender
-    msg['To'] = receiver
-    msg.set_content(Message)
 
     try:
         smtpObj = smtplib.SMTP("automail.spie.org")

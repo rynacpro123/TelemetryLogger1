@@ -16,8 +16,8 @@ def SendAlertNotification():
     sender = "ryanc@spie.org"
     #receiver = "3607399044@msg.fi.google.com" # ryan
     #receiver = "2534323244@tmomail.net"  # Linden
-    receiver = "ETLGroup@spie.org"  # BI team
-    #receiver = "ryanc@spie.org"
+    #receiver = "ETLGroup@spie.org"  # BI team
+    receiver = "ryanc@spie.org"
 
 
     #set email message contents

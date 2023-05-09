@@ -144,7 +144,31 @@ def getCurrentAlertStateDict():
 
     return AlertState_Dict
 
+def time_in_range(start, end, x):
+    """Return true if x is in the range [start, end]"""
 
+    if start <= end:
+        return start <= x <= end
+    else:
+        return start <= x or x <= end
+
+def CheckIfAutoAcknowledmentNeeded():
+    with open(ConfigFile_relativeLocation) as ConfigFile:
+        ConfigFile_Dict = yaml.load(ConfigFile, Loader=SafeLoader)
+
+    # open the Alertstate yaml file to write new state of things
+    with open(AlertStateFile_relativeLocation) as AlertStateFile:
+        AlertState_Dict = yaml.load(AlertStateFile, Loader=SafeLoader)
+
+    CurrentTime = datetime.now().time()
+    AutoAcknowledgeStartTime = time(1, 00, 0) #11:30pm
+    AutoAcknowledgeEndTime = time(23, 00, 0) #11:55pm
+    CurrentErrorState = AlertState_Dict['LastCheckedState']['LastRecordedErrorState']
+
+    if ((CurrentErrorState == "Error") and time_in_range(AutoAcknowledgeStartTime, AutoAcknowledgeEndTime, CurrentTime)):
+        return 1 #(TRUE) We need to acknowldedge a stale alert
+    else:
+        return -1 #(FALSE) No alerts need to be acknowledged
 
 
 def CheckIfDefConEscalationNeeded():
