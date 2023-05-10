@@ -6,9 +6,9 @@ Email_AlertCredentials:
   Password: NotMyPassword
 EscalationPolicy:
   Defcon1:
-    Contact: ryanc@spie.org
+    Contact: ETLGroup@spie.org
   Defcon2:
-    Contact: ryanc@spie.org
+    Contact: ETLGroup@spie.org
   Defcon3:
-    Contact: ryanc@spie.org
+    Contact: ETLGroup@spie.org
 TimeBetweenEscalations: 1

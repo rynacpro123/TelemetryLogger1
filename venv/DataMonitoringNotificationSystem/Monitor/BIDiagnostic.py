@@ -1,5 +1,3 @@
-
-
 from pathlib import Path
 import sys
 
@@ -25,35 +23,36 @@ sys.path.insert(0, path_WatchTower)
 
 
 from TelemetryCheck import GetTelemetry_IsErrorState_Today
-#from StateControl import *
+from StateControl import *
 from AlertLog import *
 
 
-#
-# SetCheckStateDateTime()
-#
-#
-# #get today state of telemetry errors and update AlertState.Yaml with current state
-# if (GetTelemetry_IsErrorState_Today() == 1):   #    (1)"Error"  /  (-1)"NoError"
-#     #set state of yaml state file when there is an error
-#     SetControlState('Error')
-#
-#
-#
-# #assess if defcon escalation needed and send alert as needed
-# if (CheckIfDefConEscalationNeeded() == 1):
-#     IncrementDecrimentDefConLevel(-1)
-#     SetNextEscalationDateTime()
-#     SendAlertNotification()
-#
+
+SetCheckStateDateTime()
+
+
+#get today state of telemetry errors and update AlertState.Yaml with current state
+if (GetTelemetry_IsErrorState_Today() == 1):   #    (1)"Error"  /  (-1)"NoError"
+    #set state of yaml state file when there is an error
+    SetControlState('Error')
+
+
+
+#assess if defcon escalation needed and send alert as needed
+if (CheckIfDefConEscalationNeeded() == 1):
+    IncrementDecrimentDefConLevel(-1)
+    SetNextEscalationDateTime()
+    SendAlertNotification()
+
 
 #assess if we need to auto acknowledge an alert
 if (CheckIfAutoAcknowledmentNeeded() == 1):
-    SendAlertNotification()
-    print("NeedToacknowledge2")
+    SetAcknowledgeAlert()
+    SendAlertNotification("AutoAcknowledge")
+    print("AutoAcknowledge - Complete")
 
 # #log current state of alertState file to DB log
-# LogCurrentStatusToDB()
+LogCurrentStatusToDB()
 
 
 print("BIDiagnostic execution complete")

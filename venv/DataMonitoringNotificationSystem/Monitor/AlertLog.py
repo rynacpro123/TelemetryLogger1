@@ -25,6 +25,7 @@ def SendAlertNotification(MessageType='GeneralError'):
 
     DefconLevel = AlertStatus_Dict['AlertState']['DefconState']
     NextEscalationTime =  AlertStatus_Dict['AlertState']['DefconStartTime'] + timedelta(hours=Config_Dict['TimeBetweenEscalations'])
+    AlertStateFile_LastRecordedErrorState = AlertStatus_Dict['LastCheckedState']['LastRecordedErrorState']
     NextEscalationTime_friendlyName = NextEscalationTime.strftime("%m/%d/%Y %H:%M")
     DefConLevel1 = Config_Dict['EscalationPolicy']['Defcon1']['Contact']
     DefConLevel2 = Config_Dict['EscalationPolicy']['Defcon2']['Contact']
@@ -42,42 +43,35 @@ def SendAlertNotification(MessageType='GeneralError'):
 
             # set email message contents
             msg = EmailMessage()
-            msg['Subject'] = 'Test_DW ETL Error Alert'
+            msg['Subject'] = 'General Test_DW ETL Error Alert'
             msg['From'] = sender
             msg['To'] = receiver
             msg.set_content(Message)
 
 
         case 'AutoAcknowledge':
-            Message = "Watchtower  ETL load has thrown an error.\n\nCurrent DefCon Level is: " + str(DefconLevel) + "\n\nNext escalation will be sent at: " + NextEscalationTime_friendlyName + "\n"
+            Message = "Watchtower Auto acknowledement complete. Defcon and Error level reset to default values. \n\nCurrent DefCon Level is: " + str(DefconLevel) + "\n\nCurrent ErrorState: " + str(AlertStateFile_LastRecordedErrorState) +"\n\n"
             Message = Message + "-----------------------------------------------------------------------"
             Message = Message + "\n     DefConlevel3 Escalation contact: " + DefConLevel3
             Message = Message + "\n     DefConlevel2 Escalation contact: " + DefConLevel2
             Message = Message + "\n     DefConlevel1 Escalation contact: " + DefConLevel1
             Message = Message + "\n---------------------------------------------------------------------"
 
-            Message = Message + "\n\n\n\n *NOTE* This notification is to inform you of an error in the EDW system load. The Defcon alert levels are graded from 4 (normal) to 1 (escalated). When an alert is first identified, the Defcon level progresses from 4 to 3 and the corresponding contact is notified. This pattern continues for Defcon levels 2 and 1. The Watchtower status page can be accessed to acknowledge the alert, which will return the Defcon level to 4. \n\nWatchtower alert status page: http://devapp23:5000/"
+            Message = Message + "\n\n\n\n *NOTE* This notification is to let you know that the Watchtower system has automatically acknowledged any unacknowledged alerts. This resetting will ensure that the system is ready to detect any new errors that may occur during the next day. \n\nWatchtower alert status page: http://devapp23:5000/"
 
             # set email message contents
             msg = EmailMessage()
-            msg['Subject'] = 'Test_DW Auto Acknowledge'
+            msg['Subject'] = 'AutoAcknowledge - Test_DW Auto Acknowledge'
             msg['From'] = sender
             msg['To'] = receiver
             msg.set_content(Message)
 
         case _:
-            Message = "Watchtower  ETL load has thrown an error.\n\nCurrent DefCon Level is: " + str(DefconLevel) + "\n\nNext escalation will be sent at: " + NextEscalationTime_friendlyName + "\n"
-            Message = Message + "-----------------------------------------------------------------------"
-            Message = Message + "\n     DefConlevel3 Escalation contact: " + DefConLevel3
-            Message = Message + "\n     DefConlevel2 Escalation contact: " + DefConLevel2
-            Message = Message + "\n     DefConlevel1 Escalation contact: " + DefConLevel1
-            Message = Message + "\n---------------------------------------------------------------------"
-
-            Message = Message + "\n\n\n\n *NOTE* This notification is to inform you of an error in the EDW system load. The Defcon alert levels are graded from 4 (normal) to 1 (escalated). When an alert is first identified, the Defcon level progresses from 4 to 3 and the corresponding contact is notified. This pattern continues for Defcon levels 2 and 1. The Watchtower status page can be accessed to acknowledge the alert, which will return the Defcon level to 4. \n\nWatchtower alert status page: http://devapp23:5000/"
+            Message = "Default Nofitication - Watchtower Processing Error\n\n"
 
             # set email message contents
             msg = EmailMessage()
-            msg['Subject'] = 'Test_DW broken'
+            msg['Subject'] = 'Default Nofitication - Watchtower Processing Error -- unhandled alert'
             msg['From'] = sender
             msg['To'] = receiver
             msg.set_content(Message)
@@ -87,8 +81,6 @@ def SendAlertNotification(MessageType='GeneralError'):
 
     try:
         smtpObj = smtplib.SMTP("automail.spie.org")
-        #smtpObj.starttls()  #do not need for anonymous relay
-        #smtpObj.login(SMTPLoginAcct, SMTPLoginPwd) #do not need for anonymous relay
         smtpObj.send_message(msg)
         smtpObj.quit()
         print ("Successfully sent notification")

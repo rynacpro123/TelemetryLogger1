@@ -161,8 +161,8 @@ def CheckIfAutoAcknowledmentNeeded():
         AlertState_Dict = yaml.load(AlertStateFile, Loader=SafeLoader)
 
     CurrentTime = datetime.now().time()
-    AutoAcknowledgeStartTime = time(1, 00, 0) #11:30pm
-    AutoAcknowledgeEndTime = time(23, 00, 0) #11:55pm
+    AutoAcknowledgeStartTime = time(23, 00, 0) #11:00pm
+    AutoAcknowledgeEndTime = time(23, 55, 0) #11:55pm
     CurrentErrorState = AlertState_Dict['LastCheckedState']['LastRecordedErrorState']
 
     if ((CurrentErrorState == "Error") and time_in_range(AutoAcknowledgeStartTime, AutoAcknowledgeEndTime, CurrentTime)):
