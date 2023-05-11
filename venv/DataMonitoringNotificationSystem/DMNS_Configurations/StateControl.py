@@ -4,6 +4,7 @@ import yaml
 from yaml.loader import SafeLoader
 from pprint import pprint
 from datetime import *
+import requests
 
 #capture relative location of AlertState.yaml file
 AlertStateFile_relativeLocation = os.path.dirname(__file__) + "\\AlertState.yaml"
@@ -196,6 +197,24 @@ def CheckIfDefConEscalationNeeded():
         if ((CurrentDateTime > NextEscalationDateTime)): # and (AlertStateFile_LastAcknowledgedDatetime < NextEscalationDateTime)):
             IsEscalationNeeded = 1 #set escalation needed to true
     return IsEscalationNeeded
+
+
+
+def CheckIfURLAvailable(URL):
+
+    #response = response = requests.get(URL)
+
+
+
+    #print(requests.get(URL, headers=headers).status_code)
+
+
+    try:
+        response = requests.get(URL)
+    except:
+        return False
+    return True
+
 
 
 

@@ -1,6 +1,8 @@
 from pathlib import Path
 import sys
 
+
+
 #get the path of the 'DataMonitoringNotificationSystem' folder
 path = str(Path(Path(__file__).parent.absolute()).parent.absolute())
 
@@ -44,6 +46,13 @@ if (CheckIfDefConEscalationNeeded() == 1):
     SetNextEscalationDateTime()
     SendAlertNotification()
 
+#Check if the production webserver is online and running
+if (CheckIfURLAvailable('http://prodapp23.spie.org/ReportServer_ProdReport') == False):
+    IncrementDecrimentDefConLevel(-1)
+    SetNextEscalationDateTime()
+    SendAlertNotification('Reporing service Offline')
+
+
 
 #assess if we need to auto acknowledge an alert
 if (CheckIfAutoAcknowledmentNeeded() == 1):
@@ -56,6 +65,11 @@ LogCurrentStatusToDB()
 
 
 print("BIDiagnostic execution complete")
+
+
+
+
+
 
 
 
