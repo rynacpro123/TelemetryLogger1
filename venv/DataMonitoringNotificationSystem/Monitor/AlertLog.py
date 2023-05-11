@@ -68,14 +68,14 @@ def SendAlertNotification(MessageType='GeneralError'):
 
 
         case 'Reporing service Offline':
-            Message = "Watchtower Auto acknowledement complete. Defcon and Error level reset to default values. \n\nCurrent DefCon Level is: " + str(DefconLevel) + "\n\nCurrent ErrorState: " + str(AlertStateFile_LastRecordedErrorState) +"\n\n"
+            Message = "The production reporting service is not responding. Potentially offline. \n\nCurrent DefCon Level is: " + str(DefconLevel) + "\n\nCurrent ErrorState: " + str(AlertStateFile_LastRecordedErrorState) +"\n\n"
             Message = Message + "-----------------------------------------------------------------------"
             Message = Message + "\n     DefConlevel3 Escalation contact: " + DefConLevel3
             Message = Message + "\n     DefConlevel2 Escalation contact: " + DefConLevel2
             Message = Message + "\n     DefConlevel1 Escalation contact: " + DefConLevel1
             Message = Message + "\n---------------------------------------------------------------------"
 
-            Message = Message + "\n\n\n\n *NOTE* This notification is to let you know that the Watchtower system has automatically acknowledged any unacknowledged alerts. This resetting will ensure that the system is ready to detect any new errors that may occur during the next day. \n\nWatchtower alert status page: http://devapp23:5000/"
+
 
             # set email message contents
             msg = EmailMessage()

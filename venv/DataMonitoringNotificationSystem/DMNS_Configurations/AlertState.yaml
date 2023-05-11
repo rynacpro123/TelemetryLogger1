@@ -1,8 +1,8 @@
 AlertState:
-  DefconStartTime: 2023-05-10 17:58:24.867168
-  DefconState: 4
+  DefconStartTime: 2023-05-10 18:07:10.846873
+  DefconState: 3
 LastCheckedState:
-  CheckStateDateTime: 2023-05-10 17:58:36.934217
+  CheckStateDateTime: 2023-05-10 18:07:10.856407
   LastAcknowledgedDatetime: 2023-05-10 14:33:59.713510
-  LastRecordedErrorState: NoError
-NextEscalationDateTime: 2023-05-10 18:58:24.867168
+  LastRecordedErrorState: Error
+NextEscalationDateTime: 2023-05-10 19:07:10.846873

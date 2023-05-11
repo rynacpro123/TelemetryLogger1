@@ -47,9 +47,10 @@ if (CheckIfDefConEscalationNeeded() == 1):
     SendAlertNotification()
 
 #Check if the production webserver is online and running
-if (CheckIfURLAvailable('http://prodapp23.spie.org/ReportServer_ProdReport') == False):
+if (IS_URLAvailable('http://prodapp23.spie.org/ReportServer_ProdReport') == False):
     IncrementDecrimentDefConLevel(-1)
     SetNextEscalationDateTime()
+    SetControlState('Error')
     SendAlertNotification('Reporing service Offline')
 
 

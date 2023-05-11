@@ -200,14 +200,7 @@ def CheckIfDefConEscalationNeeded():
 
 
 
-def CheckIfURLAvailable(URL):
-
-    #response = response = requests.get(URL)
-
-
-
-    #print(requests.get(URL, headers=headers).status_code)
-
+def IS_URLAvailable(URL):
 
     try:
         response = requests.get(URL)
